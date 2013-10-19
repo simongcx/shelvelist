@@ -4,11 +4,13 @@ shelvelist
 Python library for persistent lists
 
 Objectives
+----------
 
 Python native list like functionality without the need to hold the list in memory. Intended for large lists or low memory situations.
 
 
 Alternatives
+------------
 
 Why not put a save-to-disk wrapper around the existing Python list class? This method is suggested here:
 
