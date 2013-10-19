@@ -97,7 +97,7 @@ Please read the documentation"""
         elif isinstance(arg,int):
             return self.shelf[str(arg)]
         else:
-            raise Exception
+            raise TypeError('shelvelist indices must be integers, not ' + type(arg).__name__)
 
     def __str__(self):
         return str([self.__getitem__(i) for i in range(0,self.shelf['last']+1)])
