@@ -1,7 +1,7 @@
 shelvelist
 ==========
 
-Python library for persistent lists
+Python library for persistent lists based on shelve
 
 Objectives
 ----------
