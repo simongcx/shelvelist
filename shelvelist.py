@@ -129,7 +129,6 @@ Please read the documentation"""
         else:
             raise Exception
 
-
         self.shelf.sync()
 
     def count(self,value):
@@ -195,6 +194,7 @@ Please read the documentation"""
             self.shelf[str(arg)] = value
         else:
             raise Exception
+        self.shelf.sync()
 
     def insert(self, index, value):
         # list behaviour is that if index > len(list) then value is appended
@@ -220,6 +220,22 @@ Please read the documentation"""
                 self.__delitem__(i)
                 return
         raise ValueError('shelvelist.remove(x): x not in shelvelist')
+        self.shelf.sync()
+
+    def __add__(self, other):
+        if isinstance(other, list):
+            return [self.__getitem__(i) for i in range(0,self.shelf['last']+1)] + other
+        else:
+            raise TypeError('can only concatenate list (not "' + type(other).__name__ + '") to shelvelist')
+
+    def __iadd__(self,other):
+        if hasattr(other, '__iter__'):
+            for item in other:
+                self.append(item)
+            return self
+        else:
+            raise TypeError("'" + type(other).__name__ + "' object is not iterable")
+
 
 def appendpoplentest():
     testfilename = 'testfilename'
@@ -406,6 +422,29 @@ def removetest():
         assert l[:] == mylist
     os.remove(testfilename)
 
+
+def addandiaddtest():
+    testfilename = 'testfilename'
+    if os.path.exists(testfilename):
+        os.remove(testfilename)
+    l = shelvelist(testfilename)
+    for i in range(0,10):
+        l.append(i)
+    assert l + [10] == [0,1,2,3,4,5,6,7,8,9,10]
+    print l
+    l += [10,11]
+    print l
+    assert l[:] == [0,1,2,3,4,5,6,7,8,9,10,11]
+    try:
+        p = l + 5
+    except Exception as e:
+        print type(e).__name__ + ": " + str(e)
+    try:
+        l += 5
+    except Exception as e:
+        print type(e).__name__ + ": " + str(e)
+    os.remove(testfilename)
+
 def main():
 ##    appendpoplentest()
 ##    persistencetest()
@@ -417,7 +456,8 @@ def main():
 ##    iterationtest()
 ##    extendtest()
 ##    setitemtest()
-    removetest()
+##    removetest()
+    addandiaddtest()
 
 if __name__ == '__main__':
     main()
